@@ -1,0 +1,170 @@
+.Receive-new-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Receive-new-identity-qr {
+  margin-top: 2vh;
+  box-shadow: 0px 5px 20px #000;
+}
+
+.Receive-new-identity-text {
+  font-family: Inconsolata;
+  font-size: 25px;
+  background: #222;
+  box-sizing: border-box;
+  padding: 1vh 1vw;
+  margin-top: 2vh;
+  border-radius: 20px;
+  position: relative;
+  border: 1px solid #222;
+  cursor: pointer;
+}
+
+.Receive-new-identity-text.copied {
+  border: 1px solid #00ffe9;
+}
+
+.Receive-new-identity-text-copied {
+  background: #00ffe9;
+  color: #000;
+  position: absolute;
+  top: -11px;
+  font-size: 16px;
+  left: calc(50% - 30px);
+  border-radius: 4px;
+  padding: 2px 5px;
+  animation: copied 3s;
+}
+
+.Receive-new-identity-text-checksum {
+  color: #00ffe9;
+}
+
+.Receive-new-identity-actions {
+  margin-top: 2vh;
+  display: flex;
+}
+
+.Receive-new-identity-actions button,
+.Send button {
+  padding: 1vh 1vw;
+  margin: 0 1vh;
+  border-radius: 30px;
+  border: 0;
+  font-weight: bold;
+  background: #00ffe9;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.Send {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Send-form {
+  width: 904px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Send label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin: 0;
+  padding: 2vh 1vw 1vh 1vw;
+}
+
+.Send input {
+  font-family: Inconsolata;
+  font-size: 25px;
+  background: #222;
+  padding: 1vh 1vw;
+  border-radius: 20px;
+  border: 1px solid #222;
+  color: #fff;
+}
+
+.Send-identity {
+  font-family: Inconsolata;
+  font-size: 25px;
+  background: #222;
+  padding: 1vh 1vw;
+  border-radius: 20px;
+  border: 1px solid #222;
+  color: #fff;
+  width: 916px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+}
+
+.Send-balance {
+  box-sizing: border-box;
+  width: 250px;
+  height: 48px;
+}
+
+.Send-balance-and-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Send input:focus,
+.Send-identity:focus {
+  border: 1px solid #00ffe9;
+  outline: 0;
+}
+
+.Send-balance-currency {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.Send button {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@keyframes copied {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  16.6% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  83.4% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+}
