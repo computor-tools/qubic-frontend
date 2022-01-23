@@ -26,7 +26,7 @@ const SeedInput = forwardRef(function SeedInput2({ type, value, onChange }, ref)
 
   useEffect(
     function () {
-      if (value !== '') {
+      if (value.length === SEED_IN_LOWERCASE_LATIN_LENGTH) {
         seedChecksum(value).then(function (checksum2) {
           setChecksum(checksum2);
         });
