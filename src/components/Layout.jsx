@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext } from 'react';
+import React, { forwardRef, useContext, useState } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import CallMadeIcon from '@mui/icons-material/CallMade';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
@@ -11,6 +11,7 @@ import ActiveLink from './ActiveLink';
 import Search from './Search';
 import ConnectionStatus from './ConnectionStatus';
 import BackButton from './BackButton';
+import Input from './Input';
 
 const Header = styled.header`
   position: sticky;
@@ -84,6 +85,28 @@ const EnergyValue = styled.div`
   margin-left: 10px;
 `;
 
+const EnergyButton = styled.div`
+  width: ${function (props) {
+    return props.width || 'auto';
+  }};
+  background-color: ${function (props) {
+    return props.backgroundColor || '#00ffe9';
+  }};
+  font-size: ${function (props) {
+    return props.fontSize || '16px';
+  }};
+  font-weight: bold;
+  padding: 0.5vh 1vw;
+  border: 0;
+  border-radius: 30px;
+  margin-left: 1vw;
+  align-self: ${function (props) {
+    return props.alignSelf;
+  }};
+  color: #000;
+  cursor: pointer;
+`;
+
 const Subnav = styled.nav`
   padding: 0;
   display: flex;
@@ -105,6 +128,10 @@ const IconLink = function ({ to, Icon, children }) {
 };
 
 const WalletHeader = function () {
+  const { client, energy } = useContext(AuthContext);
+  const [editEnergy, setEditEnergy] = useState(false);
+  const [newEnergy, setNewEnergy] = useState(0);
+
   return (
     <WalletHeaderContainer>
       <Routes>
@@ -117,7 +144,34 @@ const WalletHeader = function () {
         <Select>
           <option>QU</option>
         </Select>
-        <EnergyValue>Energy: 0 QU</EnergyValue>
+        <EnergyValue>Energy: {energy?.toString() || 0} QU</EnergyValue>
+        {editEnergy && (
+          <Input
+            marginLeft="1vw"
+            type="number"
+            value={newEnergy?.toString()}
+            onChange={function (event) {
+              setNewEnergy(event.target.value);
+            }}
+          />
+        )}
+        <EnergyButton
+          onClick={async function () {
+            if (editEnergy) {
+              try {
+                await client.setEnergy(newEnergy);
+                setEditEnergy(false);
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              setNewEnergy(energy);
+              setEditEnergy(true);
+            }
+          }}
+        >
+          {editEnergy ? 'Save' : 'Set energy'}
+        </EnergyButton>
       </Energy>
       <Nav>
         <IconLink to="/wallet/send" fontSize="16px" Icon={CallMadeIcon}>

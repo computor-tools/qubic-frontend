@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint';
 import { viteSingleFile } from 'vite-plugin-singlefile';
 import license from 'rollup-plugin-license';
 import { fileURLToPath } from 'url';
@@ -9,7 +8,7 @@ import path from 'path';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [react(), eslint(), viteSingleFile()],
+  plugins: [react(), viteSingleFile()],
 
   optimizeDeps: {
     include: ['qubic-js'],
@@ -24,6 +23,7 @@ export default defineConfig({
   },
 
   build: {
+    target: ['es2020'],
     minify: false,
     rollupOptions: {
       output: {

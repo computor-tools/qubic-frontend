@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { seedChecksum, SEED_IN_LOWERCASE_LATIN_LENGTH } from 'qubic-js';
+import qubic, { SEED_IN_LOWERCASE_LATIN_LENGTH } from 'qubic-js';
 import Input from './Input';
 import { useHeight } from '../hooks/element';
 
@@ -27,7 +27,7 @@ const SeedInput = forwardRef(function SeedInput2({ type, value, onChange }, ref)
   useEffect(
     function () {
       if (value.length === SEED_IN_LOWERCASE_LATIN_LENGTH) {
-        seedChecksum(value).then(function (checksum2) {
+        qubic.seedChecksum(value).then(function (checksum2) {
           setChecksum(checksum2);
         });
       } else {

@@ -4,19 +4,14 @@
   align-items: center;
 }
 
-.Receive-new-identity-qr {
-  margin-top: 2vh;
-  box-shadow: 0px 5px 20px #000;
-}
-
 .Receive-new-identity-text {
-  font-family: Inconsolata;
+  font-family: Inconsolata, monospace;
   font-size: 25px;
   background: #222;
   box-sizing: border-box;
   padding: 1vh 1vw;
   margin-top: 2vh;
-  border-radius: 20px;
+  border-radius: 30px;
   position: relative;
   border: 1px solid #222;
   cursor: pointer;
@@ -47,8 +42,7 @@
   display: flex;
 }
 
-.Receive-new-identity-actions button,
-.Send button {
+.Receive-new-identity button {
   padding: 1vh 1vw;
   margin: 0 1vh;
   border-radius: 30px;
@@ -59,6 +53,9 @@
   font-size: 16px;
   display: flex;
   align-items: center;
+  position: absolute;
+  right: -130px;
+  top: 3.5px;
 }
 
 .Send {
@@ -68,7 +65,6 @@
 }
 
 .Send-form {
-  width: 904px;
   display: flex;
   flex-direction: column;
 }
@@ -83,37 +79,34 @@
 }
 
 .Send input {
-  font-family: Inconsolata;
+  font-family: Inconsolata, monospace;
   font-size: 25px;
   background: #222;
   padding: 1vh 1vw;
-  border-radius: 20px;
+  border-radius: 30px;
   border: 1px solid #222;
   color: #fff;
 }
 
 .Send-identity {
-  font-family: Inconsolata;
+  font-family: Inconsolata, monospace;
   font-size: 25px;
   background: #222;
   padding: 1vh 1vw;
-  border-radius: 20px;
+  border-radius: 30px;
   border: 1px solid #222;
   color: #fff;
-  width: 916px;
-  box-sizing: border-box;
   display: flex;
-  justify-content: center;
-  height: 48px;
+  width: 1050px;
 }
 
-.Send-balance {
+.Send-energy {
   box-sizing: border-box;
   width: 250px;
   height: 48px;
 }
 
-.Send-balance-and-button {
+.Send-energy-and-button {
   display: flex;
   justify-content: space-between;
 }
@@ -124,13 +117,14 @@
   outline: 0;
 }
 
-.Send-balance-currency {
+.Send-energy-currency {
   font-weight: bold;
   margin-left: 10px;
 }
 
 .Send button {
-  margin: 0;
+  margin-top: 2vh;
+  width: 100%;
 }
 
 ::-webkit-scrollbar {

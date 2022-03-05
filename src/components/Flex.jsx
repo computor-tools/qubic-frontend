@@ -2,11 +2,17 @@ import styled from 'styled-components';
 
 const Flex = styled.div`
   display: flex;
+  align-items: ${function (props) {
+    return props.alignItems;
+  }};
   justify-content: ${function (props) {
     return props.justifyContent;
   }};
   font-size: ${function (props) {
     return props.fontSize;
+  }};
+  font-family: ${function (props) {
+    return props.fontFamily;
   }};
 `;
 

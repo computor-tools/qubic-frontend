@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { createConnection } from 'qubic-js';
+import qubic from 'qubic-js';
 
 export const ConnectionContext = createContext(null);
 
@@ -7,18 +7,15 @@ export const ConnectionProvider = function ({ children, connectionInfo, dispatch
   const [connection, setConnection] = useState(undefined);
   useEffect(
     function () {
-      const connection2 = createConnection({
-        computors: [
-          { url: 'ws://localhost' },
-          { url: 'ws://localhost' },
-          { url: 'ws://localhost' },
-        ],
-        synchronizationInterval: 10000,
+      const con = qubic.connection({
+        peers: [],
+        computerStateSynchronizationTimeoutDuration: 1000,
+        computerStateSynchronizationDelayDuration: 3000,
+        connectionTimeoutDuration: 5000,
+        adminPublicKey: 'MGEBBBMCLILFBGOBFJCLNBBADELCIBAMGPGMFIDLPIPGIOLOGJAJGNIEAAALEEKFAEDGOH',
       });
-      setConnection(connection2);
-      const connectionErrorListener = function (error) {
-        console.log(error);
-      };
+      setConnection(con);
+      const connectionErrorListener = function () {};
 
       const connectionInfoListener = function (value) {
         dispatch({
@@ -27,12 +24,12 @@ export const ConnectionProvider = function ({ children, connectionInfo, dispatch
         });
       };
 
-      connection2.addListener('error', connectionErrorListener);
-      connection2.addListener('info', connectionInfoListener);
+      con.addListener('error', connectionErrorListener);
+      con.addListener('info', connectionInfoListener);
 
       return function () {
-        connection2.removeListener('error', connectionErrorListener);
-        connection2.removeListener('info', connectionInfoListener);
+        con.removeListener('error', connectionErrorListener);
+        con.removeListener('info', connectionInfoListener);
       };
     },
     [dispatch]

@@ -25,6 +25,41 @@ const reducer = function (state, { action, value }) {
           ...value,
         },
       };
+    case 'SET_ENERGY':
+      return {
+        ...state,
+        energy: value,
+      };
+    case 'CLEAR_TRANSFERS':
+      return {
+        ...state,
+        transfers: {},
+      };
+    case 'SET_TRANSFER':
+      return {
+        ...state,
+        transfers: {
+          ...state.transfers,
+          [value.hash]: { ...value, unseen: 26 * 26, seen: 0, processed: 0 },
+        },
+      };
+    case 'SET_TRANSFER_STATUS': {
+      const seen = (100 * value.seen) / (26 * 26);
+      const processed = (100 * value.processed) / (26 * 26);
+      const unseen = 100 - seen - processed;
+      return {
+        ...state,
+        transfers: {
+          ...state.transfers,
+          [value.hash]: {
+            ...state.transfers[value.hash],
+            unseen,
+            seen,
+            processed,
+          },
+        },
+      };
+    }
   }
 };
 
@@ -36,7 +71,7 @@ const App = function () {
 
   return (
     <ConnectionProvider connectionInfo={state.connectionInfo} dispatch={dispatch}>
-      <AuthProvider>
+      <AuthProvider transfers={state.transfers} energy={state.energy} dispatch={dispatch}>
         <Routes>
           <Route path="/" element={<Layout ref={headerRef} />}>
             <Route

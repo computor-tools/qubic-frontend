@@ -9,13 +9,15 @@ export const usePropery = function (ref, property, ...eventNames) {
         setValue(ref.current[property]);
       };
 
-      if (ref.current !== undefined) {
+      if (ref.current) {
         setValue(ref.current[property]);
 
         if (ref.current !== window) {
           if (eventNames.indexOf('resize') > -1) {
             new ResizeObserver(function () {
-              setValue(ref.current[property]);
+              if (ref.current && ref.current !== window) {
+                setValue(ref.current[property]);
+              }
             }).observe(ref.current);
           }
         } else {

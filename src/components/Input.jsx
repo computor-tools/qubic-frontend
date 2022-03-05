@@ -3,6 +3,9 @@ import styled from 'styled-components';
 const Input = styled.input`
   padding: 1vh 1vw;
   margin: 0 0 1vh 0;
+  margin-left: ${function (props) {
+    return props.marginLeft;
+  }};
   width: ${function (props) {
     return props.width;
   }};

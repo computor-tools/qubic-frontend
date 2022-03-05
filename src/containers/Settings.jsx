@@ -12,7 +12,7 @@ const ComputorSettings = styled.div`
 
 const Settings = function () {
   const connection = useContext(ConnectionContext);
-  const computors = connection.computors();
+  const computors = connection.peers().map(({ ip }) => ip);
   const [computor0, setComputor0] = useState(computors[0]);
   const [computor1, setComputor1] = useState(computors[1]);
   const [computor2, setComputor2] = useState(computors[2]);
@@ -41,9 +41,9 @@ const Settings = function () {
         />
         <Button
           onClick={function () {
-            connection.setComputorUrl(0, computor0);
-            connection.setComputorUrl(1, computor1);
-            connection.setComputorUrl(2, computor2);
+            connection.setPeer(0, computor0);
+            connection.setPeer(1, computor1);
+            connection.setPeer(2, computor2);
           }}
         >
           Save

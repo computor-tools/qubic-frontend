@@ -23,6 +23,9 @@ const Button = styled.button`
   margin-top: ${function (props) {
     return props.marginTop || 0;
   }};
+  align-self: ${function (props) {
+    return props.alignSelf;
+  }};
   cursor: pointer;
 `;
 

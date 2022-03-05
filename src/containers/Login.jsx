@@ -40,7 +40,6 @@ const Login = function () {
   useEffect(
     function () {
       if (loggedIn) {
-        console.log(location);
         navigate(location.state?.from?.pathname || '/', {
           replace: true,
           state: { from: location },
