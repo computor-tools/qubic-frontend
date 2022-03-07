@@ -31,7 +31,7 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
       };
 
       // eslint-disable-next-line no-unused-vars
-      const statusListener = function (value) {
+      const transferStatusListener = function (value) {
         dispatch({
           action: 'SET_TRANSFER_STATUS',
           value,
@@ -48,6 +48,7 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
           client2.addListener('error', errorListener);
           client2.addListener('transfer', transferListener);
           client2.addListener('energy', energyListener);
+          client2.addListener('transferStatus', transferStatusListener);
 
           setClient(client2);
           setLoggedIn(true);
@@ -60,6 +61,7 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
           client.removeListener('error', errorListener);
           client.removeListener('transfer', transferListener);
           client.removeListener('energy', energyListener);
+          client.removeListener('transferStatus', transferStatusListener);
 
           dispatch({
             action: 'CLEAR_TRANSFERS',

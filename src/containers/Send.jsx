@@ -64,11 +64,10 @@ const Send = function () {
           type="submit"
           onClick={async function () {
             try {
-              const transfer = await client.transfer({
+              await client.transfer({
                 destination,
                 energy: BigInt(energy),
               });
-              console.log(transfer);
               setSent(true);
             } catch (error) {
               setError(error.message);

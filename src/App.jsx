@@ -40,13 +40,13 @@ const reducer = function (state, { action, value }) {
         ...state,
         transfers: {
           ...state.transfers,
-          [value.hash]: { ...value, unseen: 26 * 26, seen: 0, processed: 0 },
+          [value.hash]: { ...value, unseen: 100, seen: 0, processed: 0 },
         },
       };
     case 'SET_TRANSFER_STATUS': {
       const seen = (100 * value.seen) / (26 * 26);
       const processed = (100 * value.processed) / (26 * 26);
-      const unseen = 100 - seen - processed;
+      const unseen = (100 * value.unseen) / (26 * 26);
       return {
         ...state,
         transfers: {

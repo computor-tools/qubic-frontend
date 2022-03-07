@@ -128,7 +128,10 @@ const WalletHome = function () {
               return (
                 <Transfer key={i}>
                   <TransferHeader>
-                    <Hash>{transfer.hash}</Hash>
+                    <Hash>
+                      {transfer.hash} {transfer.unseen.toFixed(2)} {transfer.seen.toFixed(2)}{' '}
+                      {transfer.processed.toFixed(2)}
+                    </Hash>
                     <Energy color={energy === 0 ? 'white' : '#db3918'}>
                       {energy != 0 && '-'}
                       {energy.toString()} qus
@@ -143,6 +146,7 @@ const WalletHome = function () {
                       Destination: {transfer.destination.slice(0, PUBLIC_KEY_LENGTH_IN_HEX)}
                       <Checksum>{transfer.destination.slice(PUBLIC_KEY_LENGTH_IN_HEX)}</Checksum>
                     </div>
+                    <div>{transfer.timestamp.toString()}</div>
                   </TransferDetails>
                 </Transfer>
               );
