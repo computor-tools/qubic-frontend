@@ -60,6 +60,18 @@ const reducer = function (state, { action, value }) {
         },
       };
     }
+    case 'SET_TRANSFER_RECEIPT': {
+      return {
+        ...state,
+        transfers: {
+          ...state.transfers,
+          [value.hash]: {
+            ...state.transfers[value.hash],
+            receipt: [value.receiptBase64],
+          },
+        },
+      };
+    }
   }
 };
 

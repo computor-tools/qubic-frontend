@@ -58,6 +58,28 @@ const Checksum = styled.span`
   color: #00ffe9;
 `;
 
+const ReceiptButton = styled.button`
+  width: ${function (props) {
+    return props.width || 'auto';
+  }};
+  background-color: ${function (props) {
+    return props.backgroundColor || '#00ffe9';
+  }};
+  font-size: ${function (props) {
+    return props.fontSize || '14px';
+  }};
+  font-weight: bold;
+  padding: 0.3vh 1vw;
+  border: 0;
+  border-radius: 30px;
+  margin-top: 1vh;
+  align-self: ${function (props) {
+    return props.alignSelf;
+  }};
+  color: #000;
+  cursor: pointer;
+`;
+
 const WalletHome = function () {
   const [identity, setIdentity] = useState('');
   const [copiedIdentity, setCopiedIdentity] = useState(false);
@@ -123,6 +145,9 @@ const WalletHome = function () {
                 return 0;
               }
             })
+            .filter(function (transfer) {
+              return transfer.hash !== undefined;
+            })
             .map(function (transfer, i) {
               const energy = transfer.source === transfer.destination ? 0 : transfer.energy;
               return (
@@ -147,6 +172,15 @@ const WalletHome = function () {
                       <Checksum>{transfer.destination.slice(PUBLIC_KEY_LENGTH_IN_HEX)}</Checksum>
                     </div>
                     <div>{transfer.timestamp.toString()}</div>
+                    {transfer.receipt && (
+                      <ReceiptButton
+                        onClick={function () {
+                          navigator.clipboard.writeText(transfer.receipt);
+                        }}
+                      >
+                        Copy receipt
+                      </ReceiptButton>
+                    )}
                   </TransferDetails>
                 </Transfer>
               );

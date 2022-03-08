@@ -30,10 +30,16 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
         });
       };
 
-      // eslint-disable-next-line no-unused-vars
       const transferStatusListener = function (value) {
         dispatch({
           action: 'SET_TRANSFER_STATUS',
+          value,
+        });
+      };
+
+      const receiptListener = function (value) {
+        dispatch({
+          action: 'SET_TRANSFER_RECEIPT',
           value,
         });
       };
@@ -43,12 +49,15 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
           const client2 = qubic.client({
             seed,
             connection,
+            adminPublicKey:
+              'MGEBBBMCLILFBGOBFJCLNBBADELCIBAMGPGMFIDLPIPGIOLOGJAJGNIEAAALEEKFAEDGOH',
           });
 
           client2.addListener('error', errorListener);
           client2.addListener('transfer', transferListener);
           client2.addListener('energy', energyListener);
           client2.addListener('transferStatus', transferStatusListener);
+          client2.addListener('receipt', receiptListener);
 
           setClient(client2);
           setLoggedIn(true);
@@ -62,6 +71,7 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
           client.removeListener('transfer', transferListener);
           client.removeListener('energy', energyListener);
           client.removeListener('transferStatus', transferStatusListener);
+          client.removeListener('receipt', receiptListener);
 
           dispatch({
             action: 'CLEAR_TRANSFERS',
