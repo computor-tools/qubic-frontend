@@ -7,6 +7,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { PUBLIC_KEY_LENGTH } from 'qubic-js';
 import styled from 'styled-components';
 import { PUBLIC_KEY_LENGTH_IN_HEX } from 'qubic-js/src/identity';
+import Import from './Import';
 
 const Transfers = styled.ul`
   width: calc(1050px + 2vw);
@@ -157,8 +158,16 @@ const WalletHome = function () {
                       {transfer.hash} {transfer.unseen.toFixed(2)} {transfer.seen.toFixed(2)}{' '}
                       {transfer.processed.toFixed(2)}
                     </Hash>
-                    <Energy color={energy === 0 ? 'white' : '#db3918'}>
-                      {energy != 0 && '-'}
+                    <Energy
+                      color={
+                        energy === 0
+                          ? 'white'
+                          : transfer.source === identity
+                          ? '#db3918'
+                          : '#00ffe9'
+                      }
+                    >
+                      {energy != 0 && transfer.source === identity && '-'}
                       {energy.toString()} qus
                     </Energy>
                   </TransferHeader>
@@ -195,6 +204,7 @@ const Wallet = function ({ headerHeight }) {
     <Routes>
       <Route index element={<WalletHome />} />
       <Route path="/send" element={<Send />} />
+      <Route path="/import" element={<Import />} />
       <Route path="/exchange" element={<Exchange headerHeight={headerHeight} />} />
     </Routes>
   );

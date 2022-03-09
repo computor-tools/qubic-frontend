@@ -135,7 +135,7 @@ const WalletHeader = function () {
   return (
     <WalletHeaderContainer>
       <Routes>
-        <Route path={'/receive'} element={<BackButton />} />
+        <Route path={'/import'} element={<BackButton />} />
         <Route path={'/send'} element={<BackButton />} />
         <Route path={'/exchange'} element={<BackButton />} />
         <Route path={'/orders'} element={<BackButton />} />
@@ -176,6 +176,9 @@ const WalletHeader = function () {
       <Nav>
         <IconLink to="/wallet/send" fontSize="16px" Icon={CallMadeIcon}>
           Send
+        </IconLink>
+        <IconLink to="/wallet/import" fontSize="16px" Icon={CallMadeIcon}>
+          Import
         </IconLink>
         <IconLink to="/wallet/exchange" fontSize="16px" Icon={SwapHorizIcon}>
           Exchange
