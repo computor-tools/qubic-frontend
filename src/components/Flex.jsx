@@ -8,6 +8,9 @@ const Flex = styled.div`
   justify-content: ${function (props) {
     return props.justifyContent;
   }};
+  flex-direction: ${function (props) {
+    return props.flexDirection || 'row';
+  }};
   font-size: ${function (props) {
     return props.fontSize;
   }};
@@ -28,6 +31,9 @@ export const FlexChild = styled.div`
   }};
   padding: ${function (props) {
     return props.padding;
+  }};
+  position: ${function (props) {
+    return props.position;
   }};
 `;
 

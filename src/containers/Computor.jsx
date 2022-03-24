@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useCallback, useEffect, useRef, useState } from 'react';
 import Container from '../components/Container';
-import Input from '../components/Input';
+import { InputField } from '../components/Input';
 import { AuthContext } from '../components/AuthProvider';
 import Row, { Cell } from '../components/Row';
 import RequireAuth from '../components/RequireAuth';
 import Flex, { FlexChild } from '../components/Flex';
 import Button from '../components/Button';
+import { validateIpAddress } from '../utils/validateIpAddress';
+import useInputField from '../hooks/useInput';
 
 const Computor = function () {
   const { computorIpForRemoteControl, setComputorIpForRemoteControl, computor } =
@@ -13,6 +15,31 @@ const Computor = function () {
   const nodeInfoRef = useRef();
   const [nodeInfo, setNodeInfo] = useState(undefined);
   const [nodeInfoInterval, setNodeInfoInterval] = useState();
+
+  const input = useInputField(computorIpForRemoteControl, {
+    validate: validateIpAddress,
+    placeholder: 'Computor IP',
+    name: 'computorInput',
+  });
+
+  const handleComputor = useCallback(() => {
+    const { value } = input;
+    if (computor !== undefined && value !== computorIpForRemoteControl) {
+      clearInterval(nodeInfoInterval);
+      setNodeInfo(undefined);
+      computor.close();
+    }
+    if (input.validate() === true) {
+      setComputorIpForRemoteControl(value);
+      input.initialize();
+    }
+  }, [
+    computor,
+    computorIpForRemoteControl,
+    input,
+    nodeInfoInterval,
+    setComputorIpForRemoteControl,
+  ]);
 
   useEffect(
     function () {
@@ -63,18 +90,11 @@ const Computor = function () {
           fontFamily="monospace"
           fontSize="18px"
         >
-          <Input
-            placeholder="Computor IP"
-            value={computorIpForRemoteControl}
-            onChange={function (event) {
-              if (computor !== undefined && event.target.value !== computorIpForRemoteControl) {
-                clearInterval(nodeInfoInterval);
-                setNodeInfo(undefined);
-                computor.close();
-              }
-              setComputorIpForRemoteControl(event.target.value);
-            }}
-          />
+          <InputField {...input} errorRight>
+            <Button onClick={handleComputor} disabled={input.pristine}>
+              Save
+            </Button>
+          </InputField>
           {nodeInfo !== undefined && <FlexChild padding="0 1vw">{nodeInfo.ownPublicKey}</FlexChild>}
           {nodeInfo !== undefined && (
             <Button

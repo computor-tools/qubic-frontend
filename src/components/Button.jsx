@@ -7,6 +7,12 @@ const Button = styled.button`
   background-color: ${function (props) {
     return props.backgroundColor || '#00ffe9';
   }};
+  display: ${function (props) {
+    return props.flex ? 'flex' : 'block';
+  }};
+  align-items: ${function (props) {
+    return props.alignItems;
+  }};
   font-size: ${function (props) {
     return props.fontSize || '20px';
   }};
@@ -26,7 +32,9 @@ const Button = styled.button`
   align-self: ${function (props) {
     return props.alignSelf;
   }};
-  cursor: pointer;
+  cursor: ${function (props) {
+    return props.disabled ? 'inherit' : 'pointer';
+  }};
 `;
 
 export default Button;
