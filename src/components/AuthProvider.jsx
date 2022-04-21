@@ -50,7 +50,7 @@ export const AuthProvider = function ({ children, transfers, energy, dispatch })
             seed,
             connection,
             adminPublicKey:
-              'MGEBBBMCLILFBGOBFJCLNBBADELCIBAMGPGMFIDLPIPGIOLOGJAJGNIEAAALEEKFAEDGOH',
+              'LGBPOLGKLJIKFJCEEDBLIBCCANAHFAFLGEFPEABCHFNAKMKOOBBKGHNDFFKINEGLBBMMIH',
           });
 
           client2.addListener('error', errorListener);
