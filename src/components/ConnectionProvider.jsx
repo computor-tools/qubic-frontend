@@ -23,7 +23,7 @@ export const ConnectionProvider = function ({ children }) {
         computerStateSynchronizationTimeoutDuration: 1000,
         computerStateSynchronizationDelayDuration: 3000,
         connectionTimeoutDuration: 5000,
-        adminPublicKey: 'MGEBBBMCLILFBGOBFJCLNBBADELCIBAMGPGMFIDLPIPGIOLOGJAJGNIEAAALEEKFAEDGOH',
+        adminPublicKey: 'LGBPOLGKLJIKFJCEEDBLIBCCANAHFAFLGEFPEABCHFNAKMKOOBBKGHNDFFKINEGLBBMMIH',
       });
       setConnection(con);
       const connectionErrorListener = function () {};
