@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { toHtml } from 'hast-util-to-html';
 import { lowlight } from 'lowlight';
 import cpp from 'highlight.js/lib/languages/cpp.js';
-import { privateKey } from 'qubic-js/src/identity';
+import extractInterface from 'interface-extractor';
 
 lowlight.registerLanguage('cpp', cpp);
 
@@ -48,35 +48,31 @@ const Author = function ({ headerHeight }) {
   };
 
   const setCaretPosition = function (element, offset) {
-    var range = document.createRange();
-    var sel = window.getSelection();
+    const nodesToAnalyze = Array.from(element.childNodes);
+    let currentNode = undefined;
+    let previousNode = undefined;
+    let i = 0;
+    while (i < nodesToAnalyze.length) {
+      currentNode = nodesToAnalyze[i++];
 
-    //select appropriate node
-    var currentNode = null;
-    var previousNode = null;
+      if (currentNode.childNodes.length > 0) {
+        for (let j = 0; j < currentNode.childNodes.length; j++) {
+          nodesToAnalyze.splice(i + j, 0, currentNode.childNodes[j]);
+        }
+      } else {
+        if (previousNode !== undefined) {
+          offset -= previousNode.length;
+        }
 
-    for (var i = 0; i < element.childNodes.length; i++) {
-      //save previous node
-      previousNode = currentNode;
-
-      //get current node
-      currentNode = element.childNodes[i];
-      //if we get span or something else then we should get child node
-      while (currentNode.childNodes.length > 0) {
-        currentNode = currentNode.childNodes[0];
-      }
-
-      //calc offset in current node
-      if (previousNode != null) {
-        offset -= previousNode.length;
-      }
-      //check whether current node has enough length
-      if (offset <= currentNode.length) {
-        break;
+        if (offset <= currentNode.length) {
+          break;
+        }
+        previousNode = currentNode;
       }
     }
 
-    //move caret to specified offset
+    const range = document.createRange();
+    const sel = window.getSelection();
     if (currentNode != null) {
       range.setStart(currentNode, offset);
       range.collapse(true);
@@ -89,9 +85,11 @@ const Author = function ({ headerHeight }) {
     sourceRef.current.focus();
   }, []);
 
-  useEffect(
+  useLayoutEffect(
     function () {
+      console.log(position);
       setCaretPosition(sourceRef.current, position);
+      console.log(extractInterface('test', sourceRef.current.innerText));
     },
     [source]
   );
@@ -113,8 +111,8 @@ const Author = function ({ headerHeight }) {
       }}
       onPaste={function (event) {
         event.preventDefault();
-        document.execCommand('insertHTML', false, event.clipboardData.getData('text/plain'));
         setPosition(getCaretCharacterOffsetWithin(sourceRef.current));
+        document.execCommand('insertHTML', false, event.clipboardData.getData('text/plain'));
         setSource(toHtml(lowlight.highlight('cpp', sourceRef.current.innerText)));
       }}
       ref={sourceRef}
