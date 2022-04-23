@@ -100,10 +100,26 @@ const Author = function ({ headerHeight }) {
       height={`calc(100vh - ${headerHeight}px - 4vh)`}
       spellCheck={false}
       onInput={function () {
-        setPosition(getCaretCharacterOffsetWithin(sourceRef.current));
         setSource(toHtml(lowlight.highlight('cpp', sourceRef.current.innerText)));
+        setPosition(getCaretCharacterOffsetWithin(sourceRef.current));
       }}
       onKeyDown={function (event) {
+        console.log(event.code);
+        if (event.code === 'Enter') {
+          event.preventDefault();
+          const docFragment = document.createDocumentFragment();
+          const newEle = document.createElement('br');
+          docFragment.appendChild(newEle);
+          let range = window.getSelection().getRangeAt(0);
+          range.deleteContents();
+          range.insertNode(docFragment);
+          range = document.createRange();
+          range.setStartAfter(newEle);
+          range.collapse(true);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
         if (event.code === 'Tab') {
           event.preventDefault();
           document.execCommand('insertText', false, '    ');
