@@ -130,12 +130,20 @@
 ::-webkit-scrollbar {
   width: 4px;
 }
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track:horizontal {
   background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:horizontal {
   background: #888;
   border-radius: 2px;
 }
