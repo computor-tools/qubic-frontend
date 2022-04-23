@@ -43,39 +43,41 @@ const ConnectionStatus = function () {
 
   useLayoutEffect(
     function () {
-      setPrevStatus(connectionInfo?.computerState.status);
-      switch (connectionInfo?.computerState.status) {
-        case 0:
-          clearTimeout(statusTimeout);
-          setStatusTimeout(undefined);
-          setSynced(false);
-          setBackgroundColor('#777');
-          break;
-        case 1:
-          if (statusTimeout === undefined) {
-            setStatusTimeout(
-              setTimeout(
-                function () {
-                  setSynced(false);
-                  setBackgroundColor('#db3918');
-                },
-                prevStatus !== undefined && prevStatus < 1 ? 0 : 5000
-              )
-            );
-          }
-          break;
-        case 2:
-          clearTimeout(statusTimeout);
-          setStatusTimeout(undefined);
-          setSynced(false);
-          setBackgroundColor('yellow');
-          break;
-        case 3:
-          clearTimeout(statusTimeout);
-          setStatusTimeout(undefined);
-          setSynced(true);
-          setBackgroundColor('green');
-          break;
+      if (connectionInfo?.computerState?.status) {
+        setPrevStatus(connectionInfo?.computerState.status);
+        switch (connectionInfo?.computerState.status) {
+          case 0:
+            clearTimeout(statusTimeout);
+            setStatusTimeout(undefined);
+            setSynced(false);
+            setBackgroundColor('#777');
+            break;
+          case 1:
+            if (statusTimeout === undefined) {
+              setStatusTimeout(
+                setTimeout(
+                  function () {
+                    setSynced(false);
+                    setBackgroundColor('#db3918');
+                  },
+                  prevStatus !== undefined && prevStatus < 1 ? 0 : 5000
+                )
+              );
+            }
+            break;
+          case 2:
+            clearTimeout(statusTimeout);
+            setStatusTimeout(undefined);
+            setSynced(false);
+            setBackgroundColor('yellow');
+            break;
+          case 3:
+            clearTimeout(statusTimeout);
+            setStatusTimeout(undefined);
+            setSynced(true);
+            setBackgroundColor('green');
+            break;
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,11 +87,13 @@ const ConnectionStatus = function () {
   useEffect(
     function () {
       if (connectionInfo !== undefined) {
-        setNumberOfPeers(
-          connectionInfo?.peers.filter(function ({ readyState }) {
-            return readyState === 1;
-          })?.length
-        );
+        if (connectionInfo?.peers) {
+          setNumberOfPeers(
+            connectionInfo?.peers.filter(function ({ readyState }) {
+              return readyState === 1;
+            })?.length
+          );
+        }
       }
     },
     [connectionInfo]

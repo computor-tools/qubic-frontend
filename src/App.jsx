@@ -82,7 +82,7 @@ const App = function () {
   const headerHeight = useHeight(headerRef);
 
   return (
-    <ConnectionProvider connectionInfo={state.connectionInfo} dispatch={dispatch}>
+    <ConnectionProvider connectionInfo={state.connectionInfo}>
       <AuthProvider transfers={state.transfers} energy={state.energy} dispatch={dispatch}>
         <Routes>
           <Route path="/" element={<Layout ref={headerRef} />}>
@@ -103,7 +103,7 @@ const App = function () {
                 </RequireAuth>
               }
             />
-            <Route path="/author" element={<Author />} />
+            <Route path="/IDE" element={<Author headerHeight={headerHeight} />} />
             <Route path="/computor" element={<Computor />} />
             <Route path="/stats/*" element={<Stats headerHeight={headerHeight} />} />
             <Route path="/settings" element={<Settings />} />

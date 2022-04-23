@@ -212,7 +212,7 @@ const ForwardLayoutRef = function (_, ref) {
           <Logo src={Qubic} alt="Qubic" />
           <Nav>
             <ActiveLink to="/wallet">Wallet</ActiveLink>
-            <ActiveLink to="/author">Author</ActiveLink>
+            <ActiveLink to="/IDE">IDE</ActiveLink>
             <ActiveLink to="/computor">Computor</ActiveLink>
             <ActiveLink to="/stats">Stats</ActiveLink>
           </Nav>

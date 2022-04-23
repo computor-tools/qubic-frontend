@@ -1,9 +1,20 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useReducer, useState } from 'react';
 import qubic from 'qubic-js';
+
+const reducer = function (state, { action, value }) {
+  switch (action) {
+    case 'SET_CONNECTION_INFO':
+      return {
+        ...state.connectionInfo,
+        ...value,
+      };
+  }
+};
 
 export const ConnectionContext = createContext(null);
 
-export const ConnectionProvider = function ({ children, connectionInfo, dispatch }) {
+export const ConnectionProvider = function ({ children }) {
+  const [connectionInfo, dispatch] = useReducer(reducer, {});
   const [connection, setConnection] = useState(undefined);
   useEffect(
     function () {
