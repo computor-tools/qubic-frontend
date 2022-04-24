@@ -1,11 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useLayoutEffect, useEffect, useRef, useState } from 'react';
-import { toHtml } from 'hast-util-to-html';
-import { lowlight } from 'lowlight';
-import cpp from 'highlight.js/lib/languages/cpp.js';
+import React, { useEffect, useRef, useState } from 'react';
+import hljs from 'highlight.js';
 import extractInterface from 'interface-extractor';
-
-lowlight.registerLanguage('cpp', cpp);
 
 const Editor = styled.pre`
   height: ${function (props) {
@@ -23,6 +19,7 @@ const Author = function ({ headerHeight }) {
   const [position, setPosition] = useState();
   const sourceRef = useRef();
 
+  // Source: https://stackoverflow.com/a/4812022/6180136
   const getCaretCharacterOffsetWithin = function (element) {
     var caretOffset = 0;
     var doc = element.ownerDocument || element.document;
@@ -49,32 +46,32 @@ const Author = function ({ headerHeight }) {
 
   const setCaretPosition = function (element, offset) {
     const nodesToAnalyze = Array.from(element.childNodes);
-    let currentNode = undefined;
-    let previousNode = undefined;
+    let node = undefined;
+    let prevNode = undefined;
     let i = 0;
     while (i < nodesToAnalyze.length) {
-      currentNode = nodesToAnalyze[i++];
+      node = nodesToAnalyze[i++];
 
-      if (currentNode.childNodes.length > 0) {
-        for (let j = 0; j < currentNode.childNodes.length; j++) {
-          nodesToAnalyze.splice(i + j, 0, currentNode.childNodes[j]);
+      if (node.childNodes.length > 0) {
+        for (let j = 0; j < node.childNodes.length; j++) {
+          nodesToAnalyze.splice(i + j, 0, node.childNodes[j]);
         }
       } else {
-        if (previousNode !== undefined) {
-          offset -= previousNode.length;
+        if (prevNode !== undefined) {
+          offset -= prevNode.length;
         }
 
-        if (offset <= currentNode.length) {
+        if (offset <= node.length) {
           break;
         }
-        previousNode = currentNode;
+        prevNode = node;
       }
     }
 
     const range = document.createRange();
     const sel = window.getSelection();
-    if (currentNode != null) {
-      range.setStart(currentNode, offset);
+    if (node !== undefined) {
+      range.setStart(node, offset);
       range.collapse(true);
       sel.removeAllRanges();
       sel.addRange(range);
@@ -85,11 +82,10 @@ const Author = function ({ headerHeight }) {
     sourceRef.current.focus();
   }, []);
 
-  useLayoutEffect(
+  useEffect(
     function () {
       console.log(position);
       setCaretPosition(sourceRef.current, position);
-      console.log(extractInterface('test', sourceRef.current.innerText));
     },
     [source]
   );
@@ -100,8 +96,8 @@ const Author = function ({ headerHeight }) {
       height={`calc(100vh - ${headerHeight}px - 4vh)`}
       spellCheck={false}
       onInput={function () {
-        setSource(toHtml(lowlight.highlight('cpp', sourceRef.current.innerText)));
         setPosition(getCaretCharacterOffsetWithin(sourceRef.current));
+        setSource(hljs.highlight(sourceRef.current.innerText, { language: 'cpp' }).value);
       }}
       onKeyDown={function (event) {
         console.log(event.code);
@@ -119,6 +115,12 @@ const Author = function ({ headerHeight }) {
           const sel = window.getSelection();
           sel.removeAllRanges();
           sel.addRange(range);
+
+          const preCaretRange = range.cloneRange();
+          preCaretRange.selectNodeContents(sourceRef.current);
+          preCaretRange.setEnd(range.endContainer, range.endOffset);
+          setPosition(preCaretRange.toString().length + 1);
+          setSource(hljs.highlight(sourceRef.current.innerText, { language: 'cpp' }).value);
         }
         if (event.code === 'Tab') {
           event.preventDefault();
@@ -129,7 +131,7 @@ const Author = function ({ headerHeight }) {
         event.preventDefault();
         setPosition(getCaretCharacterOffsetWithin(sourceRef.current));
         document.execCommand('insertHTML', false, event.clipboardData.getData('text/plain'));
-        setSource(toHtml(lowlight.highlight('cpp', sourceRef.current.innerText)));
+        setSource(hljs.highlight(sourceRef.current.innerText, { language: 'cpp' }).value);
       }}
       ref={sourceRef}
       dangerouslySetInnerHTML={{ __html: source }}
